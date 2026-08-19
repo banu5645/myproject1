@@ -1,0 +1,18 @@
+pipeline {
+    agent any 
+    stages {
+        stage('continous integration'){
+            steps{ 
+                git branch: 'main', url: 'https://github.com/banu5645/SampleWebapp.git'}}
+        stage('continous deploy'){
+             steps {
+                 sh '''mvn package'''
+                 deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'f21de2d3-84ee-4d2a-9955-34945d3c43cc', path: '', url: 'http://172.31.92.36:8080')], contextPath: 'nitin', war: '**/*.war'
+                  }}
+        stage('Continous testing'){
+              steps {
+                  sh '''mvn package'''
+                  deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'f21de2d3-84ee-4d2a-9955-34945d3c43cc', path: '', url: 'http://32.198.90.54:8080')], contextPath: 'muni', war: '**/*.war'
+              }        }         
+                  }
+            }
